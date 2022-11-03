@@ -94,6 +94,11 @@ html {
     display: block;
 }
 
+.adicionar p {
+    color: red;
+    padding: 0 40px;
+}
+
 .cadastrar {
     background-color: #40112D;
     color: #FFFFFF;
