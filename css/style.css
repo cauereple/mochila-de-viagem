@@ -140,6 +140,10 @@ html {
     width: 40px;
 }
 
+.botao:hover {
+    cursor: pointer;
+}
+
 .lixeira {
     padding-top: 2px;
     width: 100%;
