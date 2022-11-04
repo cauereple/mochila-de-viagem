@@ -26,21 +26,24 @@ form.addEventListener("submit", evento => {
         
         atualizaElemento(itemAtual)
 
-        itens[existe.id] = itemAtual
+        itens[itens.findIndex(elemento => elemento.id === existe.id)] = itemAtual
 
     } else {
         if(nome.value != "" && quantidade.value != "") {
 
-            itemAtual.id = itens.length
+            itemAtual.id = itens[itens.length - 1] ? (itens[itens.length - 1]).id + 1 : 0
 
             criaElemento(itemAtual)
             
             // push serve para inserir algo dentro de um array
             itens.push(itemAtual)
     
+            // usamos essa linha para escrever no localStorage
             localStorage.setItem("itens", JSON.stringify(itens)) //JSON.stringfy transforma o objeto em uma string
 
-            form.removeChild(requerimento)
+            if(requerimento) {
+                form.removeChild(requerimento)
+            }
     
         } else {
             if(!requerimento){
@@ -69,7 +72,7 @@ function criaElemento(item) {
     novoItem.appendChild(numeroItem)
     novoItem.innerHTML += item.nome
 
-    novoItem.appendChild(botaoDeleta())
+    novoItem.appendChild(botaoDeleta(item.id))
     lista.appendChild(novoItem)
 }
 
@@ -86,7 +89,7 @@ function atualizaElemento(item) {
     document.querySelector("[data-id='"+item.id+"']").innerHTML = item.quantidade
 }
 
-function botaoDeleta() {
+function botaoDeleta(id) {
     const elementoBotao = document.createElement('button')
     const lixeira = document.createElement('img')
     
@@ -96,7 +99,7 @@ function botaoDeleta() {
     lixeira.setAttribute("src", "/img/cesto-de-lixo.png")
 
     elementoBotao.addEventListener("click", function() {
-        deletaElemento(this.parentNode)
+        deletaElemento(this.parentNode, id)
     })
 
     elementoBotao.appendChild(lixeira)
@@ -104,6 +107,13 @@ function botaoDeleta() {
     return elementoBotao
 }
 
-function deletaElemento(tag) {
+function deletaElemento(tag, id) {
     tag.remove()
+
+    // remove um item do array
+    // o splice busca o que quer remover e a partir dali, remove X itens (no nosso caso será apenas 1 item removido)
+    // o findIndex retorna um index de um elemento qualquer, vamos passar o elemento e buscamos o elemento.id e comparamos para ver se é igual ao id que estamos passando
+    itens.splice(itens.findIndex(elemento => elemento.id === id), 1)
+
+    localStorage.setItem("itens", JSON.stringify(itens))
 }

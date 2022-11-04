@@ -96,7 +96,7 @@ html {
 
 .adicionar p {
     color: #c03527;
-    padding: 0 40px;
+    text-align: center;
 }
 
 .cadastrar {
@@ -136,9 +136,8 @@ html {
 }
 
 .botao {
-    width: 8%;
     border-radius: 13px;
-    margin: 0;
+    width: 40px;
 }
 
 .lixeira {
