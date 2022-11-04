@@ -56,7 +56,6 @@ form.addEventListener("submit", evento => {
 })
 
 function criaElemento(item) {
-
     // <li class="item"><strong>7</strong>Camisa</li>
     const novoItem = document.createElement('li')
     const numeroItem = document.createElement('strong')
@@ -69,7 +68,8 @@ function criaElemento(item) {
     // appendChild nos deixa colocar um elemento HTML dentro de outro. No nosso caso, queremos que a tag <strong> fique dentro da tag <li>
     novoItem.appendChild(numeroItem)
     novoItem.innerHTML += item.nome
-    
+
+    novoItem.appendChild(botaoDeleta())
     lista.appendChild(novoItem)
 }
 
@@ -84,4 +84,26 @@ function criaParagrafo() {
 
 function atualizaElemento(item) {
     document.querySelector("[data-id='"+item.id+"']").innerHTML = item.quantidade
+}
+
+function botaoDeleta() {
+    const elementoBotao = document.createElement('button')
+    const lixeira = document.createElement('img')
+    
+    elementoBotao.classList.add("botao")
+    lixeira.classList.add("lixeira")
+
+    lixeira.setAttribute("src", "/img/cesto-de-lixo.png")
+
+    elementoBotao.addEventListener("click", function() {
+        deletaElemento(this.parentNode)
+    })
+
+    elementoBotao.appendChild(lixeira)
+
+    return elementoBotao
+}
+
+function deletaElemento(tag) {
+    tag.remove()
 }

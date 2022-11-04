@@ -95,7 +95,7 @@ html {
 }
 
 .adicionar p {
-    color: red;
+    color: #c03527;
     padding: 0 40px;
 }
 
@@ -135,3 +135,13 @@ html {
     font-weight: 400;
 }
 
+.botao {
+    width: 8%;
+    border-radius: 13px;
+    margin: 0;
+}
+
+.lixeira {
+    padding-top: 2px;
+    width: 100%;
+}
