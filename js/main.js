@@ -1,6 +1,6 @@
 const form = document.getElementById("novoItem")
 const lista = document.getElementById('lista')
-const itens = JSON.parse(localStorage.getItem("itens")) || [];// usamos o JSON.parse para transformar de volta o nosso objeto transformado em string lá embaixo, em objeto
+const itens = JSON.parse(localStorage.getItem("itens")) || []; // usamos o JSON.parse para transformar de volta o nosso objeto transformado em string lá embaixo, em objeto
 
 
 itens.forEach( elemento => {
@@ -14,25 +14,38 @@ form.addEventListener("submit", evento => {
     const nome = evento.target.elements['nome']
     const quantidade = evento.target.elements['quantidade']
     const requerimento = document.querySelector(".requerimento")
+    const existe = itens.find(elemento => elemento.nome === nome.value) //fazemos um find no nosso Array tentando encontrar os 2 nomes, e se o nome é encontrado, atualizamos o elemento, se ele nao é encontrado, criamos o elemento
 
     const itemAtual = {
         "nome": nome.value,
         "quantidade": quantidade.value
     }
 
-    if(nome.value != "" && quantidade.value != "") {
-        criaElemento(itemAtual)
+    if(existe) {
+        itemAtual.id = existe.id
         
-        // push serve para inserir algo dentro de um array
-        itens.push(itemAtual)
+        atualizaElemento(itemAtual)
 
-        localStorage.setItem("itens", JSON.stringify(itens)) //JSON.stringfy transforma o objeto em uma string
-
-        form.removeChild(requerimento)
+        itens[existe.id] = itemAtual
 
     } else {
-        if(!requerimento){
-            criaParagrafo()
+        if(nome.value != "" && quantidade.value != "") {
+
+            itemAtual.id = itens.length
+
+            criaElemento(itemAtual)
+            
+            // push serve para inserir algo dentro de um array
+            itens.push(itemAtual)
+    
+            localStorage.setItem("itens", JSON.stringify(itens)) //JSON.stringfy transforma o objeto em uma string
+
+            form.removeChild(requerimento)
+    
+        } else {
+            if(!requerimento){
+                criaParagrafo()
+            }
         }
     }
 
@@ -52,6 +65,7 @@ function criaElemento(item) {
     
     // innerHTML recebe o que está dentro da variável quantidade, ou seja, aquilo que estamos escrevendo dentro do input quantidade na nossa página
     numeroItem.innerHTML = item.quantidade
+    numeroItem.dataset.id = item.id
     // appendChild nos deixa colocar um elemento HTML dentro de outro. No nosso caso, queremos que a tag <strong> fique dentro da tag <li>
     novoItem.appendChild(numeroItem)
     novoItem.innerHTML += item.nome
@@ -66,4 +80,8 @@ function criaParagrafo() {
 
     form.appendChild(paragrafo)
     paragrafo.appendChild(texto)
+}
+
+function atualizaElemento(item) {
+    document.querySelector("[data-id='"+item.id+"']").innerHTML = item.quantidade
 }
